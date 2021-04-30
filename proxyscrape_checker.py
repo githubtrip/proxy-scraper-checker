@@ -90,7 +90,7 @@ if __name__ == "__main__":
         country_code = (
             "all"
             if country_code.strip().lower() == "all"
-            else country_code.upper()
+            else country_code.strip().upper()
         )
         for ssl in SSL:
             for anonymity_level in ANONYMITY_LEVELS:
@@ -98,7 +98,7 @@ if __name__ == "__main__":
                     target=get_proxies,
                     args=(
                         MY_IP,
-                        country_code.strip(),
+                        country_code,
                         ssl.strip().lower(),
                         anonymity_level.strip().lower(),
                         TIMEOUT,

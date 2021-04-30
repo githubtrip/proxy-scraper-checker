@@ -42,11 +42,12 @@ def get_proxies(
             "https://api.proxyscrape.com/?request=displayproxies&proxytype=http"
         )
         if req.status_code == 200:
-            array = req.text.replace("\r", "").split("\n")
+            array = req.text.replace("\r", "\n").split("\n")
             for proxy in array:
                 if proxy:
                     Thread(
-                        target=check, args=(proxy, my_ip, timeout, ip_service)
+                        target=check,
+                        args=(proxy.strip(), my_ip, timeout, ip_service),
                     ).start()
         else:
             print(req.text)
@@ -57,17 +58,18 @@ def get_proxies(
 def main():
     ip_service = input(
         "Service to get your IP (leave empty to use https://ident.me): "
-    )
+    ).strip()
     timeout = input(
-        """\nHow many seconds to wait for the client to make a connection?
+        """
+How many seconds to wait for the client to make a connection?
 Lower value results in getting less proxies but they're going to be faster.
-I personally set this value to 1 or 2.
+I personally set this value to 1 or 1.5.
 Empty means that the request will continue until the connection is closed.
 Timeout = """
-    )
+    ).strip()
     if not ip_service:
         ip_service = "https://ident.me"
-    my_ip = get(ip_service).text
+    my_ip = get(ip_service).text.strip()
     open("proxies.txt", "w").close()
     if timeout:
         get_proxies(my_ip, int(timeout), ip_service)

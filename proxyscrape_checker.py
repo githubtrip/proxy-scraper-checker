@@ -9,6 +9,8 @@ from typing import Union
 
 from requests import get
 
+from config import IP_SERVICE, MY_IP, TIMEOUT
+
 
 def check(
     proxy: str,
@@ -25,7 +27,7 @@ def check(
         ).text
         if my_ip != ip:
             print(proxy)
-            with open("proxies.txt", "a") as f:
+            with open("http_proxies.txt", "a") as f:
                 f.write(f"{proxy}\n")
     except Exception:
         pass
@@ -39,7 +41,7 @@ def get_proxies(
     """Get HTTP proxies from proxyscrape.com and check() their validity."""
     try:
         req = get(
-            "https://api.proxyscrape.com/?request=displayproxies&proxytype=http"
+            "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http"
         )
         if req.status_code == 200:
             array = req.text.replace("\r", "\n").split("\n")
@@ -55,27 +57,8 @@ def get_proxies(
         print(e)
 
 
-def main():
-    ip_service = input(
-        "Service to get your IP (leave empty to use https://ident.me): "
-    ).strip()
-    timeout = input(
-        """
-How many seconds to wait for the client to make a connection?
-Lower value results in getting less proxies but they're going to be faster.
-I personally set this value to 1 or 1.5.
-Empty means that the request will continue until the connection is closed.
-Timeout = """
-    ).strip()
-    if not ip_service:
-        ip_service = "https://ident.me"
-    my_ip = get(ip_service).text.strip()
-    open("proxies.txt", "w").close()
-    if timeout:
-        get_proxies(my_ip, int(timeout), ip_service)
-    else:
-        get_proxies(my_ip, None, ip_service)
-
-
 if __name__ == "__main__":
-    main()
+    if not MY_IP:
+        MY_IP = get(IP_SERVICE).text.strip()
+    open("http_proxies.txt", "w").close()
+    get_proxies(MY_IP, TIMEOUT, IP_SERVICE)

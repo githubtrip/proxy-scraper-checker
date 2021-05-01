@@ -34,7 +34,7 @@ def check(
             ip_service,
             proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
             timeout=timeout,
-        ).text
+        ).text.strip()
         if my_ip != ip:
             print(proxy)
             with open(f"http_{country}_{ssl}_{anonymity}.txt", "a") as f:

@@ -5,7 +5,6 @@ Fast, simple and configurable script to get and check free HTTP proxies
 from proxyscrape.com and save them to files.
 """
 from threading import Thread
-from typing import Union
 
 from requests import get
 
@@ -25,7 +24,7 @@ def check(
     country: str = "all",
     ssl: str = "all",
     anonymity: str = "all",
-    timeout: Union[float, None] = None,
+    timeout: float = None,
     ip_service: str = "https://ident.me",
 ) -> None:
     """Check proxy validity."""
@@ -35,12 +34,13 @@ def check(
             proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
             timeout=timeout,
         ).text.strip()
+    except Exception:
+        pass
+    else:
         if my_ip != ip:
             print(proxy)
             with open(f"http_{country}_{ssl}_{anonymity}.txt", "a") as f:
                 f.write(f"{proxy}\n")
-    except Exception:
-        pass
 
 
 def get_proxies(
@@ -48,7 +48,7 @@ def get_proxies(
     country: str = "all",
     ssl: str = "all",
     anonymity: str = "all",
-    timeout: Union[float, None] = None,
+    timeout: float = None,
     ip_service: str = "https://ident.me",
 ) -> None:
     """Get HTTP proxies from proxyscrape.com and check() their validity."""
@@ -56,6 +56,12 @@ def get_proxies(
         req = get(
             f"https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&country={country}&ssl={ssl}&anonymity={anonymity}"
         )
+    except Exception as e:
+        print(
+            f"""Couldn't get country={country}, ssl={ssl}, anonymity={anonymity}.
+Exception: {e}"""
+        )
+    else:
         if req.status_code == 200:
             array = req.text.replace("\r", "\n").split("\n")
             open(f"http_{country}_{ssl}_{anonymity}.txt", "w").close()
@@ -75,12 +81,10 @@ def get_proxies(
                     ).start()
         else:
             print(
-                f"Couldn't get country={country}, ssl={ssl}, anonymity={anonymity}:\n{req}\n{req.text}"
+                f"""Couldn't get country={country}, ssl={ssl}, anonymity={anonymity}:
+{req}
+{req.text}"""
             )
-    except Exception as e:
-        print(
-            f"Couldn't get country={country}, ssl={ssl}, anonymity={anonymity}.\nException: {e}"
-        )
 
 
 if __name__ == "__main__":

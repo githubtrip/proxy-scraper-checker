@@ -25,4 +25,4 @@ ANONYMITY_LEVELS = ["all"]
 # Lower value results in getting less proxies but they're going to be faster.
 # I set this value to 1 or 1.5.
 # If set to None the request will continue until the connection is closed.
-TIMEOUT = 5
+TIMEOUT = 3

@@ -38,7 +38,6 @@ def check(
         pass
     else:
         if my_ip != ip:
-            print(proxy)
             with open(f"http_{country}_{ssl}_{anonymity}.txt", "a") as f:
                 f.write(f"{proxy}\n")
 
@@ -52,6 +51,7 @@ def get_proxies(
     ip_service: str = "https://ident.me",
 ) -> None:
     """Get HTTP proxies from proxyscrape.com and check() their validity."""
+    print(f"Checking country={country}, ssl={ssl}, anonymity={anonymity}...")
     try:
         req = get(
             f"https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&country={country}&ssl={ssl}&anonymity={anonymity}"
@@ -63,9 +63,9 @@ Exception: {e}"""
         )
     else:
         if req.status_code == 200:
-            array = req.text.replace("\r", "\n").split("\n")
             open(f"http_{country}_{ssl}_{anonymity}.txt", "w").close()
-            for proxy in array:
+            proxies = req.text.replace("\r", "\n").split("\n")
+            for proxy in proxies:
                 if proxy:
                     Thread(
                         target=check,
@@ -79,6 +79,9 @@ Exception: {e}"""
                             ip_service,
                         ),
                     ).start()
+            print(
+                f"Finished checking country={country}, ssl={ssl}, anonymity={anonymity}"
+            )
         else:
             print(
                 f"""Couldn't get country={country}, ssl={ssl}, anonymity={anonymity}:
@@ -88,8 +91,8 @@ Exception: {e}"""
 
 
 if __name__ == "__main__":
-    if not MY_IP:
-        MY_IP = get(IP_SERVICE).text.strip()
+    IP_SERVICE = IP_SERVICE.strip()
+    MY_IP = MY_IP.strip() if MY_IP else get(IP_SERVICE).text.strip()
     for country_code in COUNTRY_CODES:
         country_code = (
             "all"
@@ -106,6 +109,6 @@ if __name__ == "__main__":
                         ssl.strip().lower(),
                         anonymity_level.strip().lower(),
                         TIMEOUT,
-                        IP_SERVICE.strip(),
+                        IP_SERVICE,
                     ),
                 ).start()

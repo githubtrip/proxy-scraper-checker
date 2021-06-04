@@ -54,9 +54,11 @@ def scrape(source: str) -> None:
 if __name__ == "__main__":
     IP_SERVICE = IP_SERVICE.strip()
     MY_IP = get(IP_SERVICE).text.strip()
+    if isinstance(SOURCES, str):
+        SOURCES = (SOURCES,)
     proxies = []
     threads = []
-    for source in SOURCES:
+    for source in tuple(set(SOURCES)):
         t = Thread(target=scrape, args=(source.strip(),))
         threads.append(t)
         t.start()

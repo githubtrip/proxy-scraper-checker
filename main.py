@@ -11,34 +11,23 @@ from requests import get
 from config import IP_SERVICE, SOURCES, TIMEOUT
 
 
-def check(
-    proxy: str,
-    my_ip: str,
-    timeout: float = None,
-    ip_service: str = "https://ident.me",
-) -> None:
+def check(proxy: str) -> None:
     """Check proxy validity."""
     try:
         ip = get(
-            ip_service,
+            IP_SERVICE,
             proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
-            timeout=timeout,
+            timeout=TIMEOUT,
         ).text.strip()
     except Exception:
         pass
     else:
-        if my_ip != ip:
-            proxies.append(f"{ip}\n")
+        if MY_IP != ip:
+            proxies.append(f"{proxy}\n")
 
 
-def get_proxies(
-    source: str,
-    my_ip: str,
-    timeout: float = None,
-    ip_service: str = "https://ident.me",
-) -> None:
+def scrape(source: str) -> None:
     """Get HTTP proxies from source and check() their validity."""
-    print(f"Checking {source}")
     try:
         req = get(source)
     except Exception as e:
@@ -46,14 +35,13 @@ def get_proxies(
     else:
         status_code = req.status_code
         if status_code == 200:
+            print(f"Checking {source}")
             proxies = req.text.replace("\r", "\n").split("\n")
             threads = []
             for proxy in proxies:
                 proxy = proxy.strip()
                 if proxy:
-                    t = Thread(
-                        target=check, args=(proxy, my_ip, timeout, ip_service)
-                    )
+                    t = Thread(target=check, args=(proxy,))
                     threads.append(t)
                     t.start()
             for t in threads:
@@ -69,10 +57,7 @@ if __name__ == "__main__":
     proxies = []
     threads = []
     for source in SOURCES:
-        t = Thread(
-            target=get_proxies,
-            args=(source.strip(), MY_IP, TIMEOUT, IP_SERVICE),
-        )
+        t = Thread(target=scrape, args=(source.strip(),))
         threads.append(t)
         t.start()
     for t in threads:

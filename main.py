@@ -23,30 +23,23 @@ def check(proxy: str) -> None:
         pass
     else:
         if MY_IP != ip:
-            proxies.append(f"{proxy}\n")
+            working_proxies.append(f"{proxy}\n")
 
 
 def scrape(source: str) -> None:
     """Get HTTP proxies from source and check() their validity."""
+    print(f"Getting {source}")
     try:
-        req = get(source)
+        req = get(source, timeout=30)
     except Exception as e:
         print(f"ERROR {source}: {e}")
     else:
         status_code = req.status_code
         if status_code == 200:
-            print(f"Checking {source}")
-            proxies = req.text.replace("\r", "\n").split("\n")
-            threads = []
-            for proxy in proxies:
+            for proxy in req.text.replace("\r", "\n").split("\n"):
                 proxy = proxy.strip()
                 if proxy:
-                    t = Thread(target=check, args=(proxy,))
-                    threads.append(t)
-                    t.start()
-            for t in threads:
-                t.join()
-            print(f"Finished {source}")
+                    all_proxies.append(proxy)
         else:
             print(f"ERROR {source} status code: {status_code}")
 
@@ -56,7 +49,8 @@ if __name__ == "__main__":
     MY_IP = get(IP_SERVICE).text.strip()
     if isinstance(SOURCES, str):
         SOURCES = (SOURCES,)
-    proxies = []
+
+    all_proxies = []
     threads = []
     for source in tuple(set(SOURCES)):
         t = Thread(target=scrape, args=(source.strip(),))
@@ -64,5 +58,21 @@ if __name__ == "__main__":
         t.start()
     for t in threads:
         t.join()
+
+    print("Checking proxies...")
+    working_proxies = []
+    threads = []
+    for proxy in tuple(set(all_proxies)):
+        t = Thread(target=check, args=(proxy,))
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
+
     with open("http_proxies.txt", "w") as f:
-        f.writelines(list(set(proxies)))
+        f.writelines(working_proxies)
+    print(
+        """
+Working proxies have been saved to http_proxies.txt
+Thank you for using this script :)"""
+    )

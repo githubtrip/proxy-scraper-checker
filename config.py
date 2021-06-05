@@ -19,5 +19,4 @@ IP_SERVICE = "https://ident.me"
 
 # How many seconds to wait for the client to make a connection.
 # Lower value results in getting less proxies but they're going to be faster.
-# If set to None the request will continue until the connection is closed.
 TIMEOUT = 3

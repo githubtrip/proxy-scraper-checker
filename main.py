@@ -51,20 +51,22 @@ if __name__ == "__main__":
         SOURCES = (SOURCES,)
 
     all_proxies = []
-    threads = []
-    for source in tuple(set(SOURCES)):
-        t = Thread(target=scrape, args=(source.strip(),))
-        threads.append(t)
+    threads = [
+        Thread(target=scrape, args=(source.strip(),))
+        for source in tuple(set(SOURCES))
+    ]
+    for t in threads:
         t.start()
     for t in threads:
         t.join()
 
     print("Checking proxies...")
     working_proxies = []
-    threads = []
-    for proxy in tuple(set(all_proxies)):
-        t = Thread(target=check, args=(proxy,))
-        threads.append(t)
+    threads = [
+        Thread(target=check, args=(proxy,))
+        for proxy in tuple(set(all_proxies))
+    ]
+    for t in threads:
         t.start()
     for t in threads:
         t.join()

@@ -5,6 +5,7 @@ Fast, simple and configurable script to get and check free HTTP proxies
 from different sources and save them to a file.
 """
 from threading import Thread
+from time import sleep
 
 from requests import get
 
@@ -67,7 +68,11 @@ if __name__ == "__main__":
         for proxy in tuple(set(all_proxies))
     ]
     for t in threads:
-        t.start()
+        try:
+            t.start()
+        except RuntimeError:
+            sleep(TIMEOUT)
+            t.start()
     for t in threads:
         t.join()
 

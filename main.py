@@ -28,7 +28,7 @@ def check(proxy: str) -> None:
 
 
 def scrape(source: str) -> None:
-    """Get HTTP proxies from source and check() their validity."""
+    """Get proxies from source and append them to all_proxies."""
     print(f"Getting {source}")
     try:
         req = get(source, timeout=30)

@@ -36,7 +36,7 @@ def scrape(source: str) -> None:
     else:
         status_code = req.status_code
         if status_code == 200:
-            for proxy in req.text.replace("\r", "\n").split("\n"):
+            for proxy in req.text.splitlines():
                 proxy = proxy.strip()
                 if proxy:
                     all_proxies.append(proxy)

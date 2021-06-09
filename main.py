@@ -30,7 +30,7 @@ def check(proxy: str) -> None:
                     geolocation = loads(
                         get(
                             f"https://geolocation-db.com/jsonp/{ip}",
-                            timeout=TIMEOUT,
+                            timeout=15,
                         )
                         .text.split("(")[1]
                         .strip(")")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     for t in threads:
         t.join()
 
-    with open("http_proxies.txt", "w") as f:
+    with open("http_proxies.txt", "w", encoding="utf-8") as f:
         f.writelines(sorted(working_proxies))
     print(
         """

@@ -4,12 +4,13 @@
 Fast, simple and configurable script to get and check free HTTP proxies
 from different sources and save them to a file.
 """
+from json import loads
 from threading import Thread
 from time import sleep
 
 from requests import get
 
-from config import IP_SERVICE, SOURCES, TIMEOUT
+from config import GEOLOCATION, IP_SERVICE, SOURCES, TIMEOUT
 
 
 def check(proxy: str) -> None:
@@ -24,6 +25,23 @@ def check(proxy: str) -> None:
         pass
     else:
         if MY_IP != ip:
+            if GEOLOCATION:
+                try:
+                    geolocation = loads(
+                        get(
+                            f"https://geolocation-db.com/jsonp/{ip}",
+                            timeout=TIMEOUT,
+                        )
+                        .text.split("(")[1]
+                        .strip(")")
+                    )
+                except Exception:
+                    pass
+                else:
+                    country_name = geolocation["country_name"]
+                    city = geolocation["city"]
+                    state = geolocation["state"]
+                    proxy += f"::{country_name}::{city}::{state}"
             working_proxies.append(f"{proxy}\n")
 
 
@@ -77,7 +95,7 @@ if __name__ == "__main__":
         t.join()
 
     with open("http_proxies.txt", "w") as f:
-        f.writelines(working_proxies)
+        f.writelines(sorted(working_proxies))
     print(
         """
 Working proxies have been saved to http_proxies.txt

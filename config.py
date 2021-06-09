@@ -11,8 +11,9 @@ SOURCES = (
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
 )
 
-# Example for proxyscrape.com with country = US, ssl = yes, anonymity = elite.
-# SOURCES = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&country=US&ssl=yes&anonymity=elite"
+# Add geolocation info for each proxy. True or False.
+# Output format is ip:port::country_name::city::state
+GEOLOCATION = True
 
 # Service for getting your IP address and checking if proxies are valid.
 IP_SERVICE = "https://ident.me"

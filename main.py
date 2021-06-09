@@ -36,12 +36,20 @@ def check(proxy: str) -> None:
                         .strip(")")
                     )
                 except Exception:
-                    pass
+                    country_name = None
+                    city = None
+                    state = None
                 else:
                     country_name = geolocation["country_name"]
+                    if country_name == "Not found":
+                        country_name = None
                     city = geolocation["city"]
+                    if city == "Not found":
+                        city = None
                     state = geolocation["state"]
-                    proxy += f"::{country_name}::{city}::{state}"
+                    if state == "Not found":
+                        state = None
+                proxy += f"::{country_name}::{city}::{state}"
             working_proxies.append(f"{proxy}\n")
 
 

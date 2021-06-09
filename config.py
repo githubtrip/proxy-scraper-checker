@@ -13,7 +13,7 @@ SOURCES = (
 
 # Add geolocation info for each proxy. True or False.
 # Output format is ip:port::country_name::city::state
-GEOLOCATION = True
+GEOLOCATION = False
 
 # Service for getting your IP address and checking if proxies are valid.
 IP_SERVICE = "https://ident.me"

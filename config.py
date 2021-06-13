@@ -6,9 +6,11 @@ SOURCES = (
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/https.txt",
+    "https://raw.githubusercontent.com/proxiesmaster/Free-Proxy-List/main/proxies.txt",
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/https.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
+    "https://raw.githubusercontent.com/Volodichev/proxy-list/main/http.txt",
 )
 
 # Add geolocation info for each proxy. True or False.

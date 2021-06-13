@@ -3,7 +3,9 @@
 # Where to get the proxy lists from.
 SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
+    "https://raw.githubusercontent.com/chipsed/proxies/main/proxies.txt",
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+    "https://raw.githubusercontent.com/hendrikbgr/Free-Proxy-Repo/master/proxy_list.txt",
     "https://raw.githubusercontent.com/KUTlime/ProxyList/main/ProxyList.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/https.txt",

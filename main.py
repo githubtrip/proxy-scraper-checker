@@ -87,7 +87,7 @@ if __name__ == "__main__":
     for t in threads:
         t.join()
 
-    print("Checking proxies...")
+    print(f"Checking {len(all_proxies)} proxies...")
     working_proxies = []
     threads = [
         Thread(

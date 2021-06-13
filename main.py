@@ -14,7 +14,7 @@ from config import GEOLOCATION, IP_SERVICE, SOURCES, TIMEOUT
 
 
 def check(proxy: str) -> None:
-    """Check proxy validity."""
+    """Check proxy validity and get its geolocation if enabled."""
     try:
         ip = get(
             IP_SERVICE,

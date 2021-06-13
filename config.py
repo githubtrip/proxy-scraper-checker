@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Where to get the proxy lists from.
+# Format of proxies must be ip:port, http://ip:port or https://ip:port
 SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/chipsed/proxies/main/proxies.txt",

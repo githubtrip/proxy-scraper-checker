@@ -4,6 +4,7 @@
 SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+    "https://raw.githubusercontent.com/KUTlime/ProxyList/main/ProxyList.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/http.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/https.txt",
     "https://raw.githubusercontent.com/proxiesmaster/Free-Proxy-List/main/proxies.txt",

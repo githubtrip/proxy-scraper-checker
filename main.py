@@ -90,7 +90,10 @@ if __name__ == "__main__":
     print("Checking proxies...")
     working_proxies = []
     threads = [
-        Thread(target=check, args=(proxy,))
+        Thread(
+            target=check,
+            args=(proxy.replace("http://", "").replace("https://", ""),),
+        )
         for proxy in tuple(set(all_proxies))
     ]
     for t in threads:

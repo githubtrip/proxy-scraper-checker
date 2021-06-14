@@ -7,10 +7,16 @@ Fast, simple and configurable script to get and check free HTTP proxies from dif
 ## Using this script
 
 - Make sure your `Python` version is >= `3.6`.
-- Install `requests` library.
+- Install libraries from `requirements.txt`.
 - Edit `config.py` according to your needs.
 - Run `main.py`.
 
 ## Buy me a coffee
 
 If you want to thank me financially, ask for details in [Telegram](https://t.me/monosans) or [VK](https://vk.com/id607137534).
+
+## License
+
+Licensed under the MIT license.
+
+This product includes GeoLite2 data created by MaxMind, available from http://www.maxmind.com.

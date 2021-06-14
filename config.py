@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Where to get the proxy lists from.
-# Format of proxies must be ip:port, http://ip:port or https://ip:port
+# Format of proxies must be ip:port or http://ip:port or https://ip:port
 SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/chipsed/proxies/main/proxies.txt",
@@ -18,7 +18,7 @@ SOURCES = (
 )
 
 # Add geolocation info for each proxy. True or False.
-# Output format is ip:port::country_name::city::state
+# Output format is ip:port::Country Name::State::City
 GEOLOCATION = False
 
 # Service for getting your IP address and checking if proxies are valid.

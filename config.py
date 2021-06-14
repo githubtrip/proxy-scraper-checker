@@ -21,6 +21,9 @@ SOURCES = (
 # Output format is ip:port::Country Name::State::City
 GEOLOCATION = False
 
+# Save only anonymous proxies.
+ANONYMOUS_ONLY = False
+
 # Service for getting your IP address and checking if proxies are valid.
 IP_SERVICE = "https://ident.me"
 

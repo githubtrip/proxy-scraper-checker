@@ -11,7 +11,7 @@ from time import sleep
 from maxminddb import open_database
 from requests import get
 
-from config import GEOLOCATION, IP_SERVICE, SOURCES, TIMEOUT
+from config import ANONYMOUS_ONLY, GEOLOCATION, IP_SERVICE, SOURCES, TIMEOUT
 
 
 def scrape(source: str) -> None:
@@ -43,14 +43,24 @@ def check(proxy: str) -> None:
         pass
     else:
         if MY_IP != ip:
-            if GEOLOCATION:
-                geolocation = reader.get(ip)
-                proxy += (
-                    try_to_add_location(geolocation, "country")
-                    + try_to_add_location(geolocation, "subdivisions")
-                    + try_to_add_location(geolocation, "city")
-                )
-            working_proxies.append(proxy)
+            if ANONYMOUS_ONLY:
+                if ip != proxy.split(":")[0]:
+                    if GEOLOCATION:
+                        proxy += get_geolocation(ip)
+                    working_proxies.append(proxy)
+            else:
+                if GEOLOCATION:
+                    proxy += get_geolocation(ip)
+                working_proxies.append(proxy)
+
+
+def get_geolocation(ip: str) -> str:
+    geolocation = reader.get(ip)
+    return (
+        try_to_add_location(geolocation, "country")
+        + try_to_add_location(geolocation, "subdivisions")
+        + try_to_add_location(geolocation, "city")
+    )
 
 
 def try_to_add_location(geolocation: dict, first_key: str) -> str:

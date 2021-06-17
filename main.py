@@ -21,7 +21,12 @@ from config import (
 
 
 def scrape(source: str, all_proxies: list) -> None:
-    """Get proxies from source and append them to all_proxies."""
+    """Get proxies from source and append them to all_proxies.
+
+    Args:
+        source (str): where to download proxy list from.
+        all_proxies (list): a list in which all proxies are written.
+    """
     try:
         req = get(source, timeout=15)
     except Exception as e:
@@ -38,7 +43,13 @@ def scrape(source: str, all_proxies: list) -> None:
 
 
 def check(proxy: str, protocol: str, working_proxies: list) -> None:
-    """Check proxy validity and append it to working_proxies."""
+    """Check proxy validity and append it to working_proxies.
+
+    Args:
+        proxy (str): ip:port.
+        protocol (str): http/socks4/socks5.
+        working_proxies (list): a list that is subsequently written to a file.
+    """
     try:
         ip = get(
             IP_SERVICE,
@@ -64,6 +75,14 @@ def check(proxy: str, protocol: str, working_proxies: list) -> None:
 
 
 def get_geolocation(ip: str) -> str:
+    """Get proxy's geolocation.
+
+    Args:
+        ip (str): proxy ip.
+
+    Returns:
+        str: proxy's geolocation.
+    """
     geolocation = reader.get(ip)
     return (
         try_to_add_location(geolocation, "country")
@@ -73,6 +92,15 @@ def get_geolocation(ip: str) -> str:
 
 
 def try_to_add_location(geolocation: dict, first_key: str) -> str:
+    """Tries to get name of country, subdivision or city.
+
+    Args:
+        geolocation (dict): dictionary with geolocation info.
+        first_key (str): country, subdivision or city.
+
+    Returns:
+        str: name of country, subdivision or city.
+    """
     try:
         geolocation = geolocation[first_key]
     except KeyError:
@@ -95,6 +123,12 @@ def run_threads(threads: list) -> None:
 
 
 def run_scraper(sources: tuple, protocol: str) -> None:
+    """Runs scraping and checking certain protocol proxies.
+
+    Args:
+        sources (tuple): where to get proxies from.
+        protocol (str): http/socks4/socks5.
+    """
     if isinstance(sources, str):
         sources = (sources,)
     print(f"Getting {protocol.upper()}_SOURCES")

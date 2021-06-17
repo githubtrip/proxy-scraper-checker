@@ -18,6 +18,7 @@ HTTP_SOURCES = (
     "https://raw.githubusercontent.com/Volodichev/proxy-list/main/http.txt",
 )
 
+# IMPORTANT! SOCKS proxies need PySocks library installed.
 SOCKS4 = True
 SOCKS4_SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks4",
@@ -25,6 +26,7 @@ SOCKS4_SOURCES = (
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
 )
+
 SOCKS5 = True
 SOCKS5_SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5"

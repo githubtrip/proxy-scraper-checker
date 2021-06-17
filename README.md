@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Fast, simple and configurable script to get and check free HTTP proxies from different sources and save them to a file.
+Fast, simple and configurable script to get and check free HTTP, SOCKS4 and SOCKS5 proxies from different sources and save them to a file.
 
 ## Using this script
 

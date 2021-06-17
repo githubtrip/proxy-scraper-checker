@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Where to get the proxy lists from.
-# Format of proxies must be ip:port or http://ip:port or https://ip:port
-SOURCES = (
+# PROTOCOL - whether to enable getting certain protocol proxies. True or False.
+# PROTOCOL_SOURCES - where to get the proxy lists from.
+HTTP = True
+HTTP_SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http",
     "https://raw.githubusercontent.com/chipsed/proxies/main/proxies.txt",
     "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
@@ -17,6 +18,21 @@ SOURCES = (
     "https://raw.githubusercontent.com/Volodichev/proxy-list/main/http.txt",
 )
 
+SOCKS4 = True
+SOCKS4_SOURCES = (
+    "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks4",
+    "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks4.txt",
+    "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt",
+    "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
+)
+SOCKS5 = True
+SOCKS5_SOURCES = (
+    "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5"
+    "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
+    "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt",
+    "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
+)
+
 # Add geolocation info for each proxy. True or False.
 # Output format is ip:port::Country Name::State::City
 GEOLOCATION = False
@@ -29,4 +45,4 @@ IP_SERVICE = "https://ident.me"
 
 # How many seconds to wait for the client to make a connection.
 # Lower value results in getting less proxies but they're going to be faster.
-TIMEOUT = 5
+TIMEOUT = 3

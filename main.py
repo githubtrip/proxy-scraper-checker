@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Fast, simple and configurable script to get and check free HTTP proxies
-from different sources and save them to a file.
-Supports getting geolocation info for proxies.
-"""
 from threading import Thread
 from time import sleep
 
 from maxminddb import open_database
 from requests import get
 
-from config import ANONYMOUS_ONLY, GEOLOCATION, IP_SERVICE, SOURCES, TIMEOUT
+from config import (
+    ANONYMOUS_ONLY,
+    GEOLOCATION,
+    HTTP,
+    HTTP_SOURCES,
+    IP_SERVICE,
+    SOCKS4,
+    SOCKS4_SOURCES,
+    SOCKS5,
+    SOCKS5_SOURCES,
+    TIMEOUT,
+)
 
 
-def scrape(source: str) -> None:
+def scrape(source: str, all_proxies: list) -> None:
     """Get proxies from source and append them to all_proxies."""
     try:
         req = get(source, timeout=15)
@@ -31,12 +37,15 @@ def scrape(source: str) -> None:
             print(f"ERROR {source} status code: {status_code}")
 
 
-def check(proxy: str) -> None:
+def check(proxy: str, protocol: str, working_proxies: list) -> None:
     """Check proxy validity and append it to working_proxies."""
     try:
         ip = get(
             IP_SERVICE,
-            proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
+            proxies={
+                "http": f"{protocol}://{proxy}",
+                "https": f"{protocol}://{proxy}",
+            },
             timeout=TIMEOUT,
         ).text.strip()
     except Exception:
@@ -85,40 +94,48 @@ def run_threads(threads: list) -> None:
         t.join()
 
 
-if __name__ == "__main__":
-    IP_SERVICE = IP_SERVICE.strip()
-    MY_IP = get(IP_SERVICE).text.strip()
-    if isinstance(SOURCES, str):
-        SOURCES = (SOURCES,)
-
-    print("Getting SOURCES")
+def run_scraper(sources: tuple, protocol: str) -> None:
+    if isinstance(sources, str):
+        sources = (sources,)
+    print(f"Getting {protocol.upper()}_SOURCES")
     all_proxies = []
     run_threads(
         [
-            Thread(target=scrape, args=(source.strip(),))
-            for source in tuple(set(SOURCES))
+            Thread(target=scrape, args=(source.strip(), all_proxies))
+            for source in tuple(set(sources))
         ]
     )
-
-    print(f"Checking {len(all_proxies)} proxies")
-    if GEOLOCATION:
-        reader = open_database("GeoLite2-City.mmdb")
+    print(f"Checking {len(all_proxies)} {protocol} proxies")
     working_proxies = []
     run_threads(
         [
             Thread(
                 target=check,
-                args=(proxy.replace("http://", "").replace("https://", ""),),
+                args=(
+                    proxy.replace(f"{protocol}://", "").replace(
+                        "https://", ""
+                    ),
+                    protocol,
+                    working_proxies,
+                ),
             )
             for proxy in tuple(set(all_proxies))
         ]
     )
 
-    with open("http_proxies.txt", "w", encoding="utf-8") as f:
+    with open(f"{protocol}_proxies.txt", "w", encoding="utf-8") as f:
         for proxy in sorted(working_proxies):
             f.write(f"{proxy}\n")
-    print(
-        """
-Working proxies have been saved to http_proxies.txt
-Thank you for using this script :)"""
-    )
+
+
+if __name__ == "__main__":
+    IP_SERVICE = IP_SERVICE.strip()
+    MY_IP = get(IP_SERVICE).text.strip()
+    if GEOLOCATION:
+        reader = open_database("GeoLite2-City.mmdb")
+    if HTTP:
+        run_scraper(HTTP_SOURCES, "http")
+    if SOCKS4:
+        run_scraper(SOCKS4_SOURCES, "socks4")
+    if SOCKS5:
+        run_scraper(SOCKS5_SOURCES, "socks5")

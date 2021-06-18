@@ -52,6 +52,8 @@ class ProxyScraperChecker(object):
         self.SOCKS5_SOURCES = self.prepare_sources(socks5_sources)
         self.TIMEOUT = timeout
         self.GEOLOCATION_MMDB = geolocation_mmdb
+        self.all_proxies = {}
+        self.working_proxies = {}
         if self.GEOLOCATION_MMDB:
             self.READER = open_database(self.GEOLOCATION_MMDB)
 
@@ -66,22 +68,6 @@ class ProxyScraperChecker(object):
             tuple: Sources without duplicates.
         """
         return (sources,) if isinstance(sources, str) else tuple(set(sources))
-
-    @staticmethod
-    def start_threads(threads: list) -> None:
-        """Start and join threads.
-
-        Args:
-            threads (list): Threads to be started and joined.
-        """
-        for t in threads:
-            try:
-                t.start()
-            except RuntimeError:
-                sleep(TIMEOUT)
-                t.start()
-        for t in threads:
-            t.join()
 
     @staticmethod
     def is_ipv4(ip: str) -> bool:
@@ -99,6 +85,21 @@ class ProxyScraperChecker(object):
         except Exception:
             pass
         return False
+
+    def start_threads(self, threads: list) -> None:
+        """Start and join threads.
+
+        Args:
+            threads (list): Threads to be started and joined.
+        """
+        for t in threads:
+            try:
+                t.start()
+            except RuntimeError:
+                sleep(self.TIMEOUT)
+                t.start()
+        for t in threads:
+            t.join()
 
     def try_to_add_location(self, geolocation: dict, first_key: str) -> str:
         """Try to get the name of country, subdivision or city.
@@ -226,8 +227,6 @@ class ProxyScraperChecker(object):
 
     def main(self) -> None:
         """Start getting proxies."""
-        self.all_proxies = {}
-        self.working_proxies = {}
         if self.HTTP_SOURCES:
             self.get_proxies(self.HTTP_SOURCES, "http")
         if self.SOCKS4_SOURCES:

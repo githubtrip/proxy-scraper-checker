@@ -4,6 +4,12 @@
 
 Fast, simple and configurable script to get and check free HTTP, SOCKS4 and SOCKS5 proxies from different sources and save them to a file.
 
+## Requirements
+
+- maxminddb
+- requests
+- PySocks
+
 ## Using this script
 
 - Make sure your `Python` version is >= `3.6`.

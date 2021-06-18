@@ -14,6 +14,7 @@ HTTP_SOURCES = (
     "https://raw.githubusercontent.com/proxiesmaster/Free-Proxy-List/main/proxies.txt",
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/https.txt",
+    "https://raw.githubusercontent.com/sunny9577/proxy-scraper/master/proxies.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
     "https://raw.githubusercontent.com/Volodichev/proxy-list/main/http.txt",
 )
@@ -26,25 +27,29 @@ SOCKS4_SOURCES = (
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
 )
-
 SOCKS5 = True
 SOCKS5_SOURCES = (
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5"
+    "https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt",
     "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
     "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
 )
 
-# Add geolocation info for each proxy. True or False.
+# Add geolocation info for each proxy.
 # Output format is ip:port::Country Name::State::City
+# True or False
 GEOLOCATION = False
 
 # Save only anonymous proxies.
 ANONYMOUS_ONLY = False
+
+# Save only IPv4 exit-node proxies.
+IPV4_ONLY = True
 
 # Service for getting your IP address and checking if proxies are valid.
 IP_SERVICE = "https://ident.me"
 
 # How many seconds to wait for the client to make a connection.
 # Lower value results in getting less proxies but they're going to be faster.
-TIMEOUT = 3
+TIMEOUT = 5

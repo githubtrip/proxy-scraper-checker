@@ -100,6 +100,14 @@ class ProxyScraperChecker(object):
 
     @staticmethod
     def is_ipv4(ip: str) -> bool:
+        """Check if ip is IPv4.
+
+        Args:
+            ip (str): IP address.
+
+        Returns:
+            bool: Return True if ip is IPv4.
+        """
         try:
             if IPv4Address(ip):
                 return True

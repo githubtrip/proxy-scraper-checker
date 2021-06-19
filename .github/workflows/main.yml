@@ -2,7 +2,7 @@ name: proxy_scraper_checker
 
 on:
   schedule:
-    - cron: '0/30 * * * *' # runs at 12:00 UTC everyday
+    - cron: '0/5 * * * *' # runs at 12:00 UTC everyday
 
 jobs:
   build:
@@ -24,13 +24,6 @@ jobs:
           
       - name: execute py script # run sj-gobierno.py to get the latest data
         run: python proxy_scraper_checker.py
-          
-      - name: commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "update data" -a
           
       - name: push changes
         uses: ad-m/github-push-action@v0.6.0

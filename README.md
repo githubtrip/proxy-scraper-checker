@@ -1,5 +1,7 @@
 # proxy-scraper-checker
 
+[![proxy_scraper_checker](https://github.com/githubtrip/proxy-scraper-checker/actions/workflows/main.yml/badge.svg)](https://github.com/githubtrip/proxy-scraper-checker/actions/workflows/main.yml)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Fast, simple and configurable script to get and check free HTTP, SOCKS4 and SOCKS5 proxies from different sources and save them to a file.

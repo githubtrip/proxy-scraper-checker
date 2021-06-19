@@ -1,7 +1,6 @@
 name: proxy_scraper_checker
 
-on:
-  on: [workflow_dispatch]
+on: [workflow_dispatch]
   
 jobs:
   build:

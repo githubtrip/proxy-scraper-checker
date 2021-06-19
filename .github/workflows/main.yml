@@ -24,8 +24,11 @@ jobs:
           
       - name: execute py script # run sj-gobierno.py to get the latest data
         run: python proxy_scraper_checker.py
-          
-      - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          branch: main
+        
+      - name: Push Changes
+        run: |
+          git config --global user.email "actions@users.noreply.github.com"
+          git config --global user.name "cron-bot"
+          git add -A
+          git commit -m "Updated content" || exit 0
+          git push

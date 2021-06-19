@@ -23,19 +23,16 @@ jobs:
       - name: execute py script # run sj-gobierno.py to get the latest data
         run: python proxy_scraper_checker.py
           
-      - name: Commit files
-      id: commit
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "github-actions"
-        git add --all
-        if [-z "$(git status --porcelain)"]; then
+      - name: Push Changes
+        run: |
+          git config --global user.email "actions@users.noreply.github.com"
+          git config --global user.name "cron-bot"
+          git add --all
+          if [-z "$(git status --porcelain)"]; then
            echo "::set-output name=push::false"
-        else
+          else
            git commit -m "Add changes" -a
            echo "::set-output name=push::true"
-        fi
-      shell: bash
-    - name: Push changes
-      if: steps.commit.outputs.push == 'true'
-      uses: ad-m/github-push-action@master
+          fi
+          git commit -m "Updated content" || exit 0
+          git push

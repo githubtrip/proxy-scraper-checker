@@ -1,9 +1,8 @@
 name: proxy_scraper_checker
 
 on:
-  schedule:
-    - cron: '0/5 * * * *' # runs at 12:00 UTC everyday
-
+  on: [workflow_dispatch]
+  
 jobs:
   build:
     runs-on: ubuntu-latest
